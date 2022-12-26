@@ -22,11 +22,27 @@ job "infosrv-job" {
       }
     }
 
+    volume "global" {
+      type      = "host"
+      source    = "nomad_global"
+      read_only = false
+    }
+
     task "infosrv" {
       driver = "docker"
       config {
         image = "larryrau/infosrv:latest"
         ports = ["client"]
+
+        #setup volume from host
+        mounts = [
+          {
+            type     = "volume"
+            target   = "/var/nomad_global/data"
+            source   = "global"
+            readonly = false
+          }
+        ]
       }
 
       resources {
