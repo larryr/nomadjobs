@@ -15,15 +15,15 @@ job "testbatch1" {
         args = ["-c", "pwd; ls -l"]
       }
       template {
+        destination = "local/install.sh"
         data = <<EOH
         ---
 
           bind_port:   {{ env "NOMAD_PORT_db" }}
           scratch_dir: {{ env "NOMAD_TASK_DIR" }}
           node_id:     {{ env "node.unique.id" }}
-          service_key: {{ key "service/my-key" }}
+          node_class:  {{ env "node.class" }}
         EOH
-        destination = "local/install.sh"
       }
 
     }
