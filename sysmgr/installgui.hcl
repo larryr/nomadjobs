@@ -1,11 +1,11 @@
-job "installtailscale" {
+job "installgui" {
   datacenters = ["lava"]
   type = "batch"
 
-  group "tsinstaller" {
+  group "installer" {
     constraint {
       attribute = "${attr.unique.hostname}"
-      value     = "n50"
+      value     = "u1"
     }
 
     task "shell" {
@@ -17,11 +17,12 @@ job "installtailscale" {
       }
       template {
         data = <<EOH
-        ---
-        apt-get -y update
-        apt-get -y install curl
-        curl -fsSL https://tailscale.com/install.sh | sh
-        tailscale up --authkey tskey-auth-ktzhhP6CNTRL-6wy9KXDwCuCDygr5rtu5tCbSmu7iFxcr8
+          apt-get -y update
+          apt-get -y upgrade
+          apt-get -y install ubuntu-desktop
+          apt-get -y install lightdm
+          systemctl start lightdm.service
+          shutdown -r now
         EOH
         destination = "local/i.sh"
       }

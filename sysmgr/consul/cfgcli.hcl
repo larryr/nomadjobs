@@ -7,6 +7,10 @@ job "consulcfgcli" {
       attribute = "${node.class}"
       value     = "general"
     }
+    constraint {
+      attribute = "${attr.unique.hostname}"
+      value = "n50"
+    }
 
     task "cfgcli" {
       driver = "raw_exec"

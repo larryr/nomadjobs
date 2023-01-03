@@ -22,6 +22,7 @@ client_addr =  "{{"{{"}} GetPrivateInterfaces | include \"network\" \"10.42.0.0/
 
 server = true
 bind_addr =  "{{"{{"}} GetPrivateInterfaces | include \"network\" \"10.42.0.0/24\" | attr \"address\"}}"
+alt_domain = "x"
 
 cert_file  = "/etc/consul.d/srvca/lava-server-consul-0.pem"
 key_file   = "/etc/consul.d/srvca/lava-server-consul-0-key.pem"

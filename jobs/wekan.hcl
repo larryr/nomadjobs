@@ -1,17 +1,17 @@
-job "genfract" {
+job "wekanjob" {
   datacenters = ["lava"]
-  type = "service"
+  type = "system"
 
-  group "genfract-grp" {
+  group "wekan" {
     count = 1
 
     constraint {
-      attribute = "${node.class}"
-      value = "general"
-    }
-    constraint {
       attribute = "${attr.kernel.name}"
       value = "linux"
+    }
+    constraint {
+      attribute = "${attr.unique.hostname}"
+      value = "n0"
     }
 
     restart {
@@ -22,28 +22,31 @@ job "genfract" {
     }
     network {
       port "client" {
-        static = 4000
+        static = 7777
       }
     }
 
-    task "genfract" {
+    task "wekan" {
       driver = "docker"
-
       config {
-        image = "larryrau/genfract:latest"
+        image = "wekanteam/wekan:latest"
         ports = ["client"]
       }
 
       resources {
-        cpu    = 100
+        cpu    = 200
         memory = 128
       }
 
       service {
         provider = "consul"
         port     = "client"
-        name     = "genfract"
+        name     = "wekan"
         tags     = ["test"]
+      }
+
+      env {
+        INFOSRV_TESTENV = "sample-env-var"
       }
     }
   }

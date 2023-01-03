@@ -35,7 +35,7 @@ job "infosrv-job" {
       }
 
       service {
-        provider = "nomad"
+        provider = "consul"
         port     = "client"
         name     = "infosrv"
         tags     = ["test"]
