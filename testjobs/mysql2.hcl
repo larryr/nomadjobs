@@ -10,6 +10,11 @@ job "db-trial" {
       value = "n50"
     }
 
+    network {
+      port "db" {
+        static = 3306
+      }
+    }
 
 
     task "mysql-server" {
@@ -23,6 +28,19 @@ job "db-trial" {
            "docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/",
          ]
        }
+
+       service {
+         provider = "consul"
+         name = "dbtrial"
+         port = "db"
+
+         check {
+           type     = "tcp"
+           interval = "10s"
+           timeout  = "2s"
+         }
+       }
+
        template {
          data = <<EOH
 CREATE DATABASE dbwebappdb;
@@ -34,10 +52,7 @@ GRANT ALL PRIVILEGES ON dbwebappdb.* TO 'dbwebapp'@'%';
       resources {
         cpu = 500
         memory = 1024
-        network {
-          mbits = 10
-          port "db" {}
-        }
+
       }
     }
   }
