@@ -3,6 +3,15 @@ job "db-trial" {
   type        = "service"
   group "mysql-server" {
     count = 1
+
+    
+    constraint {
+      attribute = "${attr.unique.hostname}"
+      value = "n50"
+    }
+
+
+
     task "mysql-server" {
        driver = "docker"
        config {
@@ -30,5 +39,6 @@ GRANT ALL PRIVILEGES ON dbwebappdb.* TO 'dbwebapp'@'%';
           port "db" {}
         }
       }
+    }
   }
 }
